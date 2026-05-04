@@ -8,11 +8,11 @@ add_subdirectory(extern/pybind11)
 
 find_package(Python 3 COMPONENTS Interpreter Development REQUIRED)
 
-set(CPP_SRC_DIR "${COMM_BRIDGE_DIR}/cpp/src/")
-set(PY_SRC_DIR "${COMM_BRIDGE_DIR}/python/")
+set(COMM_BRIDGE_CPP_SRC_DIR "${COMM_BRIDGE_DIR}/cpp/src/")
+set(COMM_BRIDGE_PY_SRC_DIR "${COMM_BRIDGE_DIR}/python/")
 
 
-file(GLOB_RECURSE SOURCE_FILES ${CPP_SRC_DIR}/*.cpp)
+file(GLOB_RECURSE SOURCE_FILES ${COMM_BRIDGE_CPP_SRC_DIR}/*.cpp)
 
 set(CMAKE_CXX_STANDARD 23) # Enable the C++23 standard
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -22,7 +22,7 @@ set(COMM_BRIDGE_LIB_NAME "Comm_Bridge")
 
 
 add_library(${COMM_BRIDGE_LIB_NAME} SHARED ${SOURCE_FILES})
-set_target_properties(${COMM_BRIDGE_LIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${PY_SRC_DIR}/lib")
+set_target_properties(${COMM_BRIDGE_LIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${COMM_BRIDGE_PY_SRC_DIR}/lib")
 
 target_link_libraries(${COMM_BRIDGE_LIB_NAME} PUBLIC pybind11::module)
 
@@ -34,9 +34,9 @@ target_include_directories(${COMM_BRIDGE_LIB_NAME}
 pybind11_extension(${COMM_BRIDGE_LIB_NAME})
 
 set(MY_SOURCES
-    ${CPP_SRC_DIR}/Communicator.cpp
-    ${CPP_SRC_DIR}/Messages.cpp
-    ${CPP_SRC_DIR}/SerialCommunicator.cpp
+    ${COMM_BRIDGE_CPP_SRC_DIR}/Communicator.cpp
+    ${COMM_BRIDGE_CPP_SRC_DIR}/Messages.cpp
+    ${COMM_BRIDGE_CPP_SRC_DIR}/SerialCommunicator.cpp
 )
 
-set(COMM_BRIDGE_PY_MODULE "${PY_SRC_DIR}/lib/*.so")
+set(COMM_BRIDGE_PY_MODULE "${COMM_BRIDGE_PY_SRC_DIR}/lib/*.so")
