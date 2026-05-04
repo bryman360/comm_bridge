@@ -17,80 +17,80 @@ Abstraction is implemented by:
 
 ## Message Structure:
 
-Start Flag (1 Byte) [Default is the character '~']
-Sender and Receiver (1 Byte)
-Command and Command Flags (1 Byte)
-Payload Length (1 Byte)
-Payload (0-250 Bytes by Default, 0-58 Bytes for Small Messaging [such as for Arduino])
-Checksum (1 Byte)
-End Flag (1 Byte) [Default is the character '\n']
+    Start Flag (1 Byte) [Default is the character '~']
+    Sender and Receiver (1 Byte)
+    Command and Command Flags (1 Byte)
+    Payload Length (1 Byte)
+    Payload (0-250 Bytes by Default, 0-58 Bytes for Small Messaging [such as for Arduino])
+    Checksum (1 Byte)
+    End Flag (1 Byte) [Default is the character '\n']
 
 ## C++ Serial Communication Usage Example:
 
 Init:
 
-        SerialCommunicator scom(0, "/dev/ttyACM0", 9600);
+    SerialCommunicator scom(0, "/dev/ttyACM0", 9600);
 
 Sending:
 
-        const int recvr_id = 2;
-        const int cmd_id = 1;
-        const int cmd_flags = 0x00;
-        std::string message = "MESSAGE TO SEND";
-        scom.sendMessage(recvr_id, cmd_id, cmd_flags, message.c_str());
+    const int recvr_id = 2;
+    const int cmd_id = 1;
+    const int cmd_flags = 0x00;
+    std::string message = "MESSAGE TO SEND";
+    scom.sendMessage(recvr_id, cmd_id, cmd_flags, message.c_str());
 
 Receiving:
 
-        while (scom.dataAvailable()) {
-            scom.recvData();
-            
-            if (scom.newMessageAvailable()) {
-                InboundMessage new_msg = scom.getNewMessage();
-                char sender_and_receiver = new_msg.getSenderAndReceiver();
-                char cmd_and_flags = new_msg.getCmdAndCmdFlags();
-                char payload_length = new_msg.getPayloadLength();
-                const char *payload = new_msg.getPayload();
-                char checksum = new_msg.getChecksum();
+    while (scom.dataAvailable()) {
+        scom.recvData();
+        
+        if (scom.newMessageAvailable()) {
+            InboundMessage new_msg = scom.getNewMessage();
+            char sender_and_receiver = new_msg.getSenderAndReceiver();
+            char cmd_and_flags = new_msg.getCmdAndCmdFlags();
+            char payload_length = new_msg.getPayloadLength();
+            const char *payload = new_msg.getPayload();
+            char checksum = new_msg.getChecksum();
 
-                std::cout << "New Message Sender:" << int(sender_and_receiver >> 4) << std::endl;
-                std::cout << "New Message Reciever:" << int(sender_and_receiver & 0xF) << std::endl;
-                std::cout << "New Message Command:" << int(cmd_and_flags >> 4) << std::endl;
-                std::cout << "New Message Command Flags:" << int(cmd_and_flags & 0xF) << std::endl;
-                std::cout << "New Message Payload Length:" << int(payload_length) << std::endl;
-                std::cout << "New Message Payload:" << payload << std::endl;
-                std::cout << "New Message Checksum:" << int(checksum) << std::endl;
-            }
+            std::cout << "New Message Sender:" << int(sender_and_receiver >> 4) << std::endl;
+            std::cout << "New Message Reciever:" << int(sender_and_receiver & 0xF) << std::endl;
+            std::cout << "New Message Command:" << int(cmd_and_flags >> 4) << std::endl;
+            std::cout << "New Message Command Flags:" << int(cmd_and_flags & 0xF) << std::endl;
+            std::cout << "New Message Payload Length:" << int(payload_length) << std::endl;
+            std::cout << "New Message Payload:" << payload << std::endl;
+            std::cout << "New Message Checksum:" << int(checksum) << std::endl;
         }
+    }
 
 ## Python Serial Communication Usage Example:
 
 Init:
 
-        scom = Comm.SerialCommunicator(0, '/dev/ttyACM0', 9600)
+    scom = Comm.SerialCommunicator(0, '/dev/ttyACM0', 9600)
 Sending:
 
-        recvr_id = 2
-        cmd_id = 1
-        cmd_flags = 0x00
-        message = "MESSAGE TO SEND"
-        scom.sendMessage(recvr_id, cmd_id, cmd_flags, message)
+    recvr_id = 2
+    cmd_id = 1
+    cmd_flags = 0x00
+    message = "MESSAGE TO SEND"
+    scom.sendMessage(recvr_id, cmd_id, cmd_flags, message)
 
 Receiving:
 
-        if scom.dataAvailable():
-            scom.recvData()
-            if scom.newMessageAvailable():
-                new_msg = scom.getNewMessage()
-                sender_and_receiver = new_msg.getSenderAndReceiver()
-                cmd_and_flags = new_msg.getCmdAndCmdFlags()
-                payload_length = new_msg.getPayloadLength()
-                payload = new_msg.getPayload()
-                checksum = new_msg.getChecksum()
+    if scom.dataAvailable():
+        scom.recvData()
+        if scom.newMessageAvailable():
+            new_msg = scom.getNewMessage()
+            sender_and_receiver = new_msg.getSenderAndReceiver()
+            cmd_and_flags = new_msg.getCmdAndCmdFlags()
+            payload_length = new_msg.getPayloadLength()
+            payload = new_msg.getPayload()
+            checksum = new_msg.getChecksum()
 
-                print("New Message Sender:", ord(sender_and_receiver) >> 4)
-                print("New Message Receiver:", ord(sender_and_receiver) & 0xF)
-                print("New Message Command:", ord(cmd_and_flags) >> 4)
-                print("New Message Command Flags:", ord(cmd_and_flags) & 0xF)
-                print("New Message Payload Length:", ord(payload_length))
-                print("New Message Payload:", payload)
-                print("New Message Checksum:", ord(checksum))
+            print("New Message Sender:", ord(sender_and_receiver) >> 4)
+            print("New Message Receiver:", ord(sender_and_receiver) & 0xF)
+            print("New Message Command:", ord(cmd_and_flags) >> 4)
+            print("New Message Command Flags:", ord(cmd_and_flags) & 0xF)
+            print("New Message Payload Length:", ord(payload_length))
+            print("New Message Payload:", payload)
+            print("New Message Checksum:", ord(checksum))
