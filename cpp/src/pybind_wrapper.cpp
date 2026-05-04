@@ -6,7 +6,7 @@
 namespace py = pybind11;
 
 
-PYBIND11_MODULE(Communicator, m, py::mod_gil_not_used()) {
+PYBIND11_MODULE(Comm_Bridge, m, py::mod_gil_not_used()) {
     m.doc() = "C++ Communicator plugin for Python";
     py::class_<Communicator>(m, "Communicator")
         .def(py::init<unsigned char>())
