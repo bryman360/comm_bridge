@@ -28,9 +28,11 @@ End Flag (1 Byte) [Default is the character '\n']
 ## C++ Serial Communication Usage Example:
 
 Init:
+
         SerialCommunicator scom(0, "/dev/ttyACM0", 9600);
 
 Sending:
+
         const int recvr_id = 2;
         const int cmd_id = 1;
         const int cmd_flags = 0x00;
@@ -38,6 +40,7 @@ Sending:
         scom.sendMessage(recvr_id, cmd_id, cmd_flags, message.c_str());
 
 Receiving:
+
         while (scom.dataAvailable()) {
             scom.recvData();
             
@@ -62,9 +65,10 @@ Receiving:
 ## Python Serial Communication Usage Example:
 
 Init:
-        scom = Comm.SerialCommunicator(0, '/dev/ttyACM0', 9600)
 
+        scom = Comm.SerialCommunicator(0, '/dev/ttyACM0', 9600)
 Sending:
+
         recvr_id = 2
         cmd_id = 1
         cmd_flags = 0x00
@@ -72,6 +76,7 @@ Sending:
         scom.sendMessage(recvr_id, cmd_id, cmd_flags, message)
 
 Receiving:
+
         if scom.dataAvailable():
             scom.recvData()
             if scom.newMessageAvailable():
