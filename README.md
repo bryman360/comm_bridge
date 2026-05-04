@@ -37,7 +37,7 @@ Sending:
         std::string message = "MESSAGE TO SEND";
         scom.sendMessage(recvr_id, cmd_id, cmd_flags, message.c_str());
 
-Recieving:
+Receiving:
         while (scom.dataAvailable()) {
             scom.recvData();
             
@@ -71,21 +71,21 @@ Sending:
         message = "MESSAGE TO SEND"
         scom.sendMessage(recvr_id, cmd_id, cmd_flags, message)
 
-Recieving:
+Receiving:
         if scom.dataAvailable():
-                    scom.recvData()
-                    if scom.newMessageAvailable():
-                        new_msg = scom.getNewMessage()
-                        sender_and_receiver = new_msg.getSenderAndReceiver()
-                        cmd_and_flags = new_msg.getCmdAndCmdFlags()
-                        payload_length = new_msg.getPayloadLength()
-                        payload = new_msg.getPayload()
-                        checksum = new_msg.getChecksum()
+            scom.recvData()
+            if scom.newMessageAvailable():
+                new_msg = scom.getNewMessage()
+                sender_and_receiver = new_msg.getSenderAndReceiver()
+                cmd_and_flags = new_msg.getCmdAndCmdFlags()
+                payload_length = new_msg.getPayloadLength()
+                payload = new_msg.getPayload()
+                checksum = new_msg.getChecksum()
 
-                        print("New Message Sender:", ord(sender_and_receiver) >> 4)
-                        print("New Message Receiver:", ord(sender_and_receiver) & 0xF)
-                        print("New Message Command:", ord(cmd_and_flags) >> 4)
-                        print("New Message Command Flags:", ord(cmd_and_flags) & 0xF)
-                        print("New Message Payload Length:", ord(payload_length))
-                        print("New Message Payload:", payload)
-                        print("New Message Checksum:", ord(checksum))
+                print("New Message Sender:", ord(sender_and_receiver) >> 4)
+                print("New Message Receiver:", ord(sender_and_receiver) & 0xF)
+                print("New Message Command:", ord(cmd_and_flags) >> 4)
+                print("New Message Command Flags:", ord(cmd_and_flags) & 0xF)
+                print("New Message Payload Length:", ord(payload_length))
+                print("New Message Payload:", payload)
+                print("New Message Checksum:", ord(checksum))
