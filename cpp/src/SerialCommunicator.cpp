@@ -1,4 +1,4 @@
-#include "SerialCommunicator.hpp"
+#include "include/SerialCommunicator.hpp"
 
 SerialCommunicator::SerialCommunicator(unsigned char id, std::string port, int baud_rate) : Communicator(id), port(port), baud_rate(baud_rate) {
     openSerialPort();
