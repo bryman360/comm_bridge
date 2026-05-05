@@ -36,7 +36,7 @@ if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
 
     pybind11_extension(${COMM_BRIDGE_PY_LIB_NAME})
 
-    set(COMM_BRIDGE_PY_MODULE "${COMM_BRIDGE_PY_SRC_DIR}/lib/*.so")
+    set(COMM_BRIDGE_PY_MODULE "${COMM_BRIDGE_PY_SRC_DIR}/lib/*.so" PARENT_SCOPE)
 else()
     list(REMOVE_ITEM SOURCE_FILES "${COMM_BRIDGE_CPP_SRC_DIR}/pybind_wrapper.cpp")
 endif()
@@ -47,9 +47,10 @@ file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 set_target_properties(${COMM_BRIDGE_LIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
-set(COMM_BRIDGE_SOURCES
+set(COMM_BRIDGE_CPP_SOURCES
     ${COMM_BRIDGE_CPP_SRC_DIR}/Communicator.cpp
     ${COMM_BRIDGE_CPP_SRC_DIR}/Messages.cpp
     ${COMM_BRIDGE_CPP_SRC_DIR}/SerialCommunicator.cpp
+    PARENT_SCOPE
 )
 
