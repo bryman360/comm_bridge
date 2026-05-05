@@ -17,23 +17,24 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 set(COMM_BRIDGE_LIB_NAME "Comm_Bridge")
 
-
-
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
     add_subdirectory(extern/pybind11)
 
     set(COMM_BRIDGE_PY_SRC_DIR "${COMM_BRIDGE_DIR}/python")
+    set(COMM_BRIDGE_PY_LIB_NAME "${COMM_BRIDGE_LIB_NAME}_PY")
 
-    set_target_properties(${COMM_BRIDGE_LIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${COMM_BRIDGE_PY_SRC_DIR}/lib")
+    add_library(${COMM_BRIDGE_PY_LIB_NAME} SHARED ${SOURCE_FILES})
 
-    target_link_libraries(${COMM_BRIDGE_LIB_NAME} PUBLIC pybind11::module)
+    set_target_properties(${COMM_BRIDGE_PY_LIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${COMM_BRIDGE_PY_SRC_DIR}/lib")
 
-    target_include_directories(${COMM_BRIDGE_LIB_NAME}
+    target_link_libraries(${COMM_BRIDGE_PY_LIB_NAME} PUBLIC pybind11::module)
+
+    target_include_directories(${COMM_BRIDGE_PY_LIB_NAME}
         PUBLIC pybind11_INCLUDE_DIRS
         PUBLIC extern/serial/include
     )
 
-    pybind11_extension(${COMM_BRIDGE_LIB_NAME})
+    pybind11_extension(${COMM_BRIDGE_PY_LIB_NAME})
 
     set(COMM_BRIDGE_PY_MODULE "${COMM_BRIDGE_PY_SRC_DIR}/lib/*.so")
 else()
@@ -41,6 +42,10 @@ else()
 endif()
 
 add_library(${COMM_BRIDGE_LIB_NAME} SHARED ${SOURCE_FILES})
+
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+
+set_target_properties(${COMM_BRIDGE_LIB_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 set(COMM_BRIDGE_SOURCES
     ${COMM_BRIDGE_CPP_SRC_DIR}/Communicator.cpp
